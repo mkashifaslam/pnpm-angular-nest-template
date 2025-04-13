@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nest-app:
+    build:
+      context: .
+      dockerfile: apps/nest-app/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  angular-app:
+    build:
+      context: .
+      dockerfile: apps/angular-app/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - nest-app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
